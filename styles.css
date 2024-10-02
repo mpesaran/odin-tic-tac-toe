@@ -1,22 +1,18 @@
-/* .board {
+.grid {
     display: grid;
-    height: 500px;
-    width: 500px;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(6, 1fr);
-    border: 1px solid black;
-    gap: 2px;
-    padding: 2px;
-    background-color: yellow;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
 }
 
-.cell {
+.grid div {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    font-size: 2rem;
-    border: 1px solid grey;
-    background: lightyellow;
+    background-color: lightgray;
+    font-size: 2em;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
     cursor: pointer;
-} */
+}

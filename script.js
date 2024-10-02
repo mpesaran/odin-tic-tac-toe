@@ -36,10 +36,12 @@ const Gameboard = (() => {
 })()
 
 const gameController = (() => {
-    const player1 = Player("Player 1", "X")
+    const player1 = Player("player 1", "X")
     const player2 = Player("player 2", "O");
     let gameover = false;
     let currentPlayer = player1;
+
+    const getCurrentPlayer = () => currentPlayer;
 
     const switchPlayer = () => {
         currentPlayer = currentPlayer === player1 ? player2 : player1;
@@ -67,7 +69,7 @@ const gameController = (() => {
                 return currentPlayer.name;
             }
         }
-        return board.flat().includes("") ? null : "Draw"
+        return board.flat().includes("") ? null : "Draw";
     }
 
     const playRound = (row, col) => {
@@ -93,7 +95,40 @@ const gameController = (() => {
         gameover = false;
     };
 
-    return { playRound, restartGame }
+    return { playRound, restartGame, getCurrentPlayer }
 })()
 
 
+const displayController = (() => {
+    const gameBoardDiv = document.getElementById("gameBoard")
+
+    const render = () => {
+        const board = Gameboard.getBoard();
+
+        gameBoardDiv.innerHTML = "";
+
+        board.forEach((row, rowIndex) => {
+            row.forEach((cell, colIndex) => {
+                const cellDiv = document.createElement('div');
+                cellDiv.textContent = cell;
+                cellDiv.addEventListener("click", () => {
+                    handleClick(rowIndex, colIndex)
+                });
+                gameBoardDiv.appendChild(cellDiv);
+            })
+        })
+    }
+
+    const handleClick = (row, col) => {
+
+        gameController.playRound(row, col);
+
+        render();
+    }
+
+    return { render }
+
+})()
+
+// Initialize the board on page load
+displayController.render();
