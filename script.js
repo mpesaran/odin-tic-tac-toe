@@ -35,5 +35,65 @@ const Gameboard = (() => {
     return { getBoard, updateBoard, resetBoard }
 })()
 
+const gameController = (() => {
+    const player1 = Player("Player 1", "X")
+    const player2 = Player("player 2", "O");
+    let gameover = false;
+    let currentPlayer = player1;
+
+    const switchPlayer = () => {
+        currentPlayer = currentPlayer === player1 ? player2 : player1;
+    }
+
+    const checkWinner = () => {
+        const board = Gameboard.getBoard();
+        const winningCombinations = [
+            // Rows
+            [[0, 0], [0, 1], [0, 2]],
+            [[1, 0], [1, 1], [1, 2]],
+            [[2, 0], [2, 1], [2, 2]],
+            // Columns
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 2]],
+            // Diagonals
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 2], [1, 1], [2, 0]]
+        ];
+
+        for (let combo of winningCombinations) {
+            const [a, b, c] = combo;
+            if (board[a[0]][a[1]] && board[a[0]][a[1]] === board[b[0]][b[1]] && board[a[0]][a[1]] === board[c[0]][c[1]]) {
+                return currentPlayer.name;
+            }
+        }
+        return board.flat().includes("") ? null : "Draw"
+    }
+
+    const playRound = (row, col) => {
+        if (gameover) return;
+
+        if (Gameboard.updateBoard(row, col, currentPlayer.marker)) {
+            console.log(`${currentPlayer.name} placed ${currentPlayer.marker} at (${row}, ${col})`)
+            const result = checkWinner();
+            if (result) {
+                console.log(result === "Draw" ? "It's a draw!" : `${result} wins!`)
+                gameover = true;
+            } else {
+                switchPlayer()
+            }
+        } else {
+            console.log("Position already taken. Choose another spot.");
+        }
+    };
+
+    const restartGame = () => {
+        Gameboard.resetBoard();
+        currentPlayer = player1;
+        gameover = false;
+    };
+
+    return { playRound, restartGame }
+})()
 
 
