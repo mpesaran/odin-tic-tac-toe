@@ -36,16 +36,25 @@ const Gameboard = (() => {
 })()
 
 const gameController = (() => {
-    const player1 = Player("player 1", "X")
-    const player2 = Player("player 2", "O");
+    let player1, player2;
     let gameover = false;
-    let currentPlayer = player1;
+    let currentPlayer;
 
-    const getCurrentPlayer = () => currentPlayer;
+    const startGame = (name1, name2) => {
+        player1 = Player(name1 || "player 1", "X")
+        player2 = Player(name2 || "player 2", "O");
+        currentPlayer = player1;
+        gameover = false;
+        Gameboard.resetBoard();
+        displayController.render();
+        displayController.updateResult("");
+        displayController.setTurnDisplay(currentPlayer.name)
+    }
 
     const switchPlayer = () => {
         currentPlayer = currentPlayer === player1 ? player2 : player1;
     }
+    const getCurrentPlayer = () => currentPlayer;
 
     const checkWinner = () => {
         const board = Gameboard.getBoard();
@@ -79,10 +88,11 @@ const gameController = (() => {
             console.log(`${currentPlayer.name} placed ${currentPlayer.marker} at (${row}, ${col})`)
             const result = checkWinner();
             if (result) {
-                console.log(result === "Draw" ? "It's a draw!" : `${result} wins!`)
+                displayController.updateResult(result === "Draw" ? "It's a draw!" : `${result} wins!`)
                 gameover = true;
             } else {
-                switchPlayer()
+                switchPlayer();
+                displayController.setTurnDisplay(currentPlayer.name)
             }
         } else {
             console.log("Position already taken. Choose another spot.");
@@ -95,12 +105,17 @@ const gameController = (() => {
         gameover = false;
     };
 
-    return { playRound, restartGame, getCurrentPlayer }
+    return { playRound, restartGame, startGame, getCurrentPlayer }
 })()
 
 
 const displayController = (() => {
-    const gameBoardDiv = document.getElementById("gameBoard")
+    const gameBoardDiv = document.getElementById("gameBoard");
+    const startButton = document.getElementById("startButton");
+    const player1Input = document.getElementById("player1");
+    const player2Input = document.getElementById("player2");
+    const resultDisplay = document.getElementById("resultDisplay");
+    const currentPlayerDiv = document.getElementById("turn");
 
     const render = () => {
         const board = Gameboard.getBoard();
@@ -119,6 +134,21 @@ const displayController = (() => {
         })
     }
 
+    const updateResult = (message) => {
+        resultDisplay.textContent = message;
+    }
+
+    const setTurnDisplay = (playerName) => {
+        currentPlayerDiv.textContent = `Now is ${playerName}'s turn`
+    }
+
+    startButton.addEventListener("click", () => {
+        const name1 = player1Input.value;
+        const name2 = player2Input.value;
+        gameController.startGame(name1, name2);
+        updateResult("")
+    })
+
     const handleClick = (row, col) => {
 
         gameController.playRound(row, col);
@@ -126,7 +156,7 @@ const displayController = (() => {
         render();
     }
 
-    return { render }
+    return { render, updateResult, setTurnDisplay }
 
 })()
 
