@@ -4,17 +4,39 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #f8f4d6;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 20px;
 }
 
 .game-info {
-    margin-bottom: 20px;
+    margin-bottom: 100px;
+}
+
+h1 {
+    color: #0c381a;
+    font-weight: bold;
+}
+
+input {
+    border: 1px #ffad64 solid;
+    padding: 5px 10px;
+    color: #0c371a;
+    margin-bottom: 30px;
+    border-radius: 3px;
+}
+
+#startButton {
+    padding: 5px 20px;
+    border: 1px #ffad64 solid;
+    color: #115025;
+    background-color: #f7f5e2;
+    border-radius: 3px;
 }
 
 #gameBoard {
@@ -22,6 +44,7 @@ body {
     grid-template-columns: repeat(3, 100px);
     grid-template-rows: repeat(3, 100px);
     gap: 5px;
+
 }
 
 #gameBoard div {
@@ -32,23 +55,26 @@ body {
     align-items: center;
     font-size: 24px;
     background-color: #ffffff;
-    border: 1px solid #ccc;
+    border: 1px solid #ffad64;
     cursor: pointer;
+    color: #9d4100;
 }
 
 #gameBoard div:hover {
-    background-color: #f9f9f9;
+    background-color: #f7f5e2;
 }
 
 #resultDisplay {
     margin-top: 10px;
-    font-size: 20px;
-    color: #333;
+    font-size: 2em;
+    color: #115025;
+    text-align: center;
 }
 
-#turnDisplay {
+#turn {
     margin-top: 10px;
     font-size: 1.2em;
     font-weight: bold;
     text-align: center;
+    color: #115025;
 }

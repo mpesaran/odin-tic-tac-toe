@@ -136,6 +136,7 @@ const displayController = (() => {
 
     const updateResult = (message) => {
         resultDisplay.textContent = message;
+        currentPlayerDiv.textContent = ""
     }
 
     const setTurnDisplay = (playerName) => {
